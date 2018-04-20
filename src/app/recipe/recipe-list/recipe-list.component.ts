@@ -21,11 +21,21 @@ export class RecipeListComponent implements OnInit {
     this.recipeService.recipeSelected.subscribe(
       (recipe: Recipe) => { 
         let index = this.recipes.indexOf(recipe);
-
         this.router.navigate([index], {relativeTo: this.activeRoute})
       }
     );
-    
+    this.recipeService.editRecipeSelected.subscribe(
+      (recipe: Recipe) => { 
+        let index = this.recipes.indexOf(recipe);
+        this.router.navigate([index, "edit"], {relativeTo: this.activeRoute})
+      }
+    );
+
   }
+
+  onNewRecipe(){
+    this.router.navigate(["recipes", "new"])
+  }
+
 
 }
