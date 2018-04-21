@@ -18,6 +18,9 @@ import { RecipeContainerComponent } from './recipe/recipe-container/recipe-conta
 import { RoutesModule } from './routes/routes.module';
 import { RecipeDetailPlaceholderComponent } from './recipe/recipe-detail-placeholder/recipe-detail-placeholder.component'
 import { HttpService } from './shared/http.service';
+import { AuthService } from './auth/auth.service';
+import { AuthComponent } from './auth/auth/auth.component';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { HttpService } from './shared/http.service';
     HeaderComponent,
     RecipeContainerComponent,
     DropdownDirective,
-    RecipeDetailPlaceholderComponent
+    RecipeDetailPlaceholderComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,9 @@ import { HttpService } from './shared/http.service';
   providers: [
     ShoppingService,
     RecipeService, 
-    HttpService
+    HttpService,
+    AuthService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

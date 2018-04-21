@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../shared/http.service';
 import { Response } from '@angular/http'
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,8 @@ import { Response } from '@angular/http'
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService,
+              private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -23,5 +25,9 @@ export class HeaderComponent implements OnInit {
 
   onFetch() {
     this.httpService.loadRecipies().subscribe();
+  }
+
+  onLogout(){
+    this.authService.logout();
   }
 }

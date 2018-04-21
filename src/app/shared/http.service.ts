@@ -4,6 +4,7 @@ import { RecipeService } from '../recipe/recipe.service';
 import 'rxjs/Rx'
 import { Recipe } from '../recipe/recipe.model';
 import { Ingredient } from './ingredient.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class HttpService {
@@ -12,14 +13,17 @@ export class HttpService {
   recipeUrl = this.baseURL+'recipes.json';
 
   constructor(private http: Http,
-              private recipeService: RecipeService) { }
+              private recipeService: RecipeService,
+              private authService: AuthService) { }
 
   saveRecipies(){
-     return this.http.put(this.recipeUrl, this.recipeService.getRecipes());
+    const token = this.authService.token;
+     return this.http.put(this.recipeUrl  + "?auth=" + token, this.recipeService.getRecipes());
   }
 
   loadRecipies(){
-    return this.http.get(this.recipeUrl).map(
+    const token = this.authService.token;
+    return this.http.get(this.recipeUrl + "?auth=" + token).map(
       (response: Response) => {
         let recipes: Recipe[] = [];
 
