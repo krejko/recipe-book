@@ -20,27 +20,24 @@ export class ShoppingService {
 
   addIngredients(ingredients: Ingredient[]){
     this.ingredients = this.ingredients.concat(ingredients);
-    this.emitEngredientsUpdated();
+    this.emitIngredientsUpdated();
     }
 
   replaceIngredient(ingredient: Ingredient, index: number){
     if (index !== -1) {
       this.ingredients[index] = ingredient;
-      this.emitEngredientsUpdated();
+      this.emitIngredientsUpdated();
     }  
   }
 
   removeIngredient(index: number){
-    if (index > -1) {
-      console.log(this.ingredients.length);
+    if (index >= 0) {
       this.ingredients.splice(index, 1);
-      console.log(this.ingredients.length);
-
-      this.emitEngredientsUpdated();
+      this.emitIngredientsUpdated();
    }
   }
 
-  emitEngredientsUpdated(){
+  emitIngredientsUpdated(){
     this.ingredientListUpdated.emit(this.ingredients);
   }
 }

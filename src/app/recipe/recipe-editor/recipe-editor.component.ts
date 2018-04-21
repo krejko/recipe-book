@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -19,10 +20,15 @@ export class RecipeEditorComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(
       (params: Params) => {
-        this.id = +params['id'];
-        this.editMode = params['id'] != null;
+        let exists = params['id'] != null;
+        let id = +params['id']
+        if (exists && (this.recipeService.getRecipes()[id] != null)){
+          this.id = id;
+          this.editMode = exists;
+        }else if (exists){
+          this.recipeService.emitCancelUpdate(null);
+        }
         this.initForm();
-
       }
     )
   }
@@ -54,12 +60,35 @@ export class RecipeEditorComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.form)
+    let recipe = new Recipe(
+      this.form.value.name,
+      this.form.value.description,
+      this.form.value.imageURL,
+      this.form.value.ingredients
+    )
+
+    if(this.editMode == true && this.id != undefined){
+      this.recipeService.replaceRecipe(recipe, this.id);
+    }else{
+      this.recipeService.addRecipe(recipe);
+    }
+  }
+
+  onCancel(){
+    let recipe = null;
+    if (this.editMode == true){
+      recipe = this.recipeService.getRecipes()[this.id];
+    }
+    this.recipeService.emitCancelUpdate(recipe);
   }
 
   onAddIngredient() {
     let formGroup = this.newIngredientFormGroup(null, null);
-    (<FormArray>this.form.get('ingredients')).push(formGroup);
+    this.getIngredientsFormArray().push(formGroup);
+  }
+
+  getIngredientsFormArray() : FormArray {
+    return (<FormArray>this.form.get('ingredients'));
   }
 
   newIngredientFormGroup(name: string, amount: number){
@@ -69,6 +98,8 @@ export class RecipeEditorComponent implements OnInit {
     });
   }
 
-
+  onRemoveIngredient(i: number){
+    this.getIngredientsFormArray().removeAt(i);
+  }
 
 }

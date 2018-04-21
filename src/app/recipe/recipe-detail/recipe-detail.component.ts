@@ -10,6 +10,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
+  id: number;
   @Input() recipe: Recipe;
 
   constructor(private shoppingService: ShoppingService,
@@ -21,11 +22,18 @@ export class RecipeDetailComponent implements OnInit {
     this.setRecipeFromID(this.activeRoute.snapshot.params['id']);
     this.activeRoute.params.subscribe(
       (params: Params) => {
-        this.setRecipeFromID(params['id'])
+        let exists = params['id'] != null;
+        let id = +params['id']
+        if (exists && (this.recipeService.getRecipes()[id] != null)){
+          this.setRecipeFromID(params['id'])
+        }else if (exists){
+          this.recipeService.emitCancelUpdate(null);
+        }
       });
   }
 
   setRecipeFromID(id){
+    this.id = id;
     this.recipe = this.recipeService.getRecipes()[id];
   }
 
@@ -35,5 +43,9 @@ export class RecipeDetailComponent implements OnInit {
 
   onEditRecipe(){
     this.recipeService.editRecipeSelected.emit(this.recipe);
+  }
+
+  onDeleteRecipe(){
+    this.recipeService.removeRecipe(this.id);
   }
 }
