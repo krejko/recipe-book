@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { ShoppingListEditorComponent } from './shopping/shopping-list-editor/shopping-list-editor.component';
@@ -34,6 +34,7 @@ import { RecipeDetailPlaceholderComponent } from './recipe/recipe-detail-placeho
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     RoutesModule
   ],
   providers: [
