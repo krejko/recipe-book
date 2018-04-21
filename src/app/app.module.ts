@@ -13,7 +13,6 @@ import { RecipeService } from './recipe/recipe.service'
 import { ShoppingService } from './shopping/shopping.service';
 
 import { RoutesModule } from './routes/routes.module';
-import { RecipeModule } from './recipe/recipe.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeComponent } from './home/home.component';
@@ -30,8 +29,7 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     RoutesModule,
     HttpModule,
-    AuthModule,
-    RecipeModule
+    AuthModule
   ],
   providers: [ 
     ShoppingService,
