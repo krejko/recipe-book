@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router'
 import { AuthGuardService } from '../auth/auth-guard.service';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'recipes', pathMatch: 'full'},
+  { path: 'shopping-list', loadChildren: '../shopping/shopping-list.module#ShoppingListModule' },
+  // { path: '', redirectTo: 'recipes', pathMatch: 'full'},
 ]
 
 @NgModule({
@@ -16,3 +17,4 @@ const appRoutes: Routes = [
   ],
 })
 export class RoutesModule { }
+ 

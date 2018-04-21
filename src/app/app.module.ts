@@ -16,7 +16,6 @@ import { RoutesModule } from './routes/routes.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
-import { ShoppingListModule } from './shopping/shopping-list.module';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { ShoppingListModule } from './shopping/shopping-list.module';
     RoutesModule,
     HttpModule,
     AuthModule,
-    RecipeModule,
-    ShoppingListModule
+    RecipeModule
   ],
   providers: [ 
     ShoppingService,

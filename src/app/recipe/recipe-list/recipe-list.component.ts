@@ -46,6 +46,8 @@ export class RecipeListComponent implements OnInit {
     let index = this.recipes.indexOf(recipe);
 
     if (index == -1){
+      console.log("here");
+      
       this.router.navigate(["recipes"])
     }else{
       this.router.navigate([index], {relativeTo: this.activeRoute})
