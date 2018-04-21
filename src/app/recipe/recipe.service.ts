@@ -37,6 +37,11 @@ export class RecipeService {
     return this.recipes.slice(); // Returns copy of array
   }
 
+  setRecipies(recipes: Recipe[]){
+    this.recipes = recipes;
+    this.emitRecipieUpdated(null);
+  }
+
   addRecipe (recipe: Recipe) {
     this.recipes.push(recipe);
     this.emitRecipieUpdated(recipe);

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from '../shared/http.service';
+import { Response } from '@angular/http'
 
 @Component({
   selector: 'app-header',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private httpService: HttpService) { }
 
   ngOnInit() {
   }
 
+  onSave(){
+    this.httpService.saveRecipies().subscribe(
+      (response: Response) => console.log(response),
+      (error: Response) => console.log(error)
+    )
+  }
+
+  onFetch() {
+    this.httpService.loadRecipies().subscribe();
+  }
 }

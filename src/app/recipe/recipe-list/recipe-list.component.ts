@@ -31,8 +31,6 @@ export class RecipeListComponent implements OnInit {
     );
     this.recipeService.recipieUpdated.subscribe(
       (recipe: Recipe) => {
-        console.log("updated sub")
-
         this.recipes = this.recipeService.getRecipes();
         this.navigateToDetail(recipe);
       }
@@ -46,7 +44,6 @@ export class RecipeListComponent implements OnInit {
 
   navigateToDetail(recipe){
     let index = this.recipes.indexOf(recipe);
-    console.log("Details")
 
     if (index == -1){
       this.router.navigate(["recipes"])
