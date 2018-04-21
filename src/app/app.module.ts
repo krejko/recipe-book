@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule} from '@angular/http'
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 
 import { HttpService } from './shared/http.service';
 import { AuthService } from './auth/auth.service';
@@ -15,13 +14,11 @@ import { ShoppingService } from './shopping/shopping.service';
 import { RoutesModule } from './routes/routes.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
-import { HomeComponent } from './home/home.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    HomeComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +26,8 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     RoutesModule,
     HttpModule,
-    AuthModule
+    AuthModule, 
+    CoreModule
   ],
   providers: [ 
     ShoppingService,
