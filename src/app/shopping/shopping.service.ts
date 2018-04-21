@@ -4,7 +4,8 @@ import { Ingredient } from '../shared/ingredient.model';
 @Injectable()
 export class ShoppingService {
 
-  @Output() ingredientAdded = new EventEmitter<Ingredient[]>();
+  @Output() ingredientListUpdated = new EventEmitter<Ingredient[]>();
+  editIngredient = new EventEmitter<number>();
 
   private ingredients: Ingredient[] = [
     new Ingredient ("Bacon", 50),
@@ -19,6 +20,27 @@ export class ShoppingService {
 
   addIngredients(ingredients: Ingredient[]){
     this.ingredients = this.ingredients.concat(ingredients);
-    this.ingredientAdded.emit(ingredients);
+    this.emitEngredientsUpdated();
+    }
+
+  replaceIngredient(ingredient: Ingredient, index: number){
+    if (index !== -1) {
+      this.ingredients[index] = ingredient;
+      this.emitEngredientsUpdated();
+    }  
+  }
+
+  removeIngredient(index: number){
+    if (index > -1) {
+      console.log(this.ingredients.length);
+      this.ingredients.splice(index, 1);
+      console.log(this.ingredients.length);
+
+      this.emitEngredientsUpdated();
+   }
+  }
+
+  emitEngredientsUpdated(){
+    this.ingredientListUpdated.emit(this.ingredients);
   }
 }
