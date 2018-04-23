@@ -1,51 +1,67 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { ShoppingService } from '../../shopping/shopping.service';
-import { RecipeService } from '../recipe.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import * as RecipeReducer from '../recipe.reducer'
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import * as RecipeActions from '../recipe.action';
 
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.css']
 })
-export class RecipeDetailComponent implements OnInit {
-  id: number;
-  @Input() recipe: Recipe;
 
+export class RecipeDetailComponent implements OnInit, OnDestroy {
+  state: RecipeReducer.State;
+  recipesState: Observable<RecipeReducer.State>; 
+  subscription: Subscription;
+  
   constructor(private shoppingService: ShoppingService,
-              private recipeService: RecipeService,
               private router: Router,
-              private activeRoute: ActivatedRoute) { }
-
+              private activeRoute: ActivatedRoute,
+              private store: Store<RecipeReducer.AppState>) { }
   ngOnInit() {
-    this.setRecipeFromID(this.activeRoute.snapshot.params['id']);
-    this.activeRoute.params.subscribe(
-      (params: Params) => {
-        let exists = params['id'] != null;
-        let id = +params['id']
-        if (exists && (this.recipeService.getRecipes()[id] != null)){
-          this.setRecipeFromID(params['id'])
-        }else if (exists){
-          this.recipeService.emitCancelUpdate(null);
+    let id = this.activeRoute.snapshot.params['id'];
+    if (id != undefined){
+      this.store.dispatch(new RecipeActions.SelectedRecipe(id))
+    }
+
+
+    this.recipesState = this.store.select('recipeList');
+
+    let value = this.recipesState.map(
+      (state: RecipeReducer.State) => {
+        return state.recipes;
+    });
+    console.log(value);
+    
+
+    this.subscription = this.recipesState.subscribe(
+      data => {
+        this.state = data;
+        if (this.state.selectedRecipe == null){
+          this.router.navigate(['recipes']);
         }
-      });
+      }
+    );
   }
 
-  setRecipeFromID(id){
-    this.id = id;
-    this.recipe = this.recipeService.getRecipes()[id];
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
   onAddIngredientsToList() {
-    this.shoppingService.addIngredients(this.recipe.ingredients);
+    this.shoppingService.addIngredients(this.state.selectedRecipe.ingredients);
   }
 
   onEditRecipe(){
-    this.recipeService.editRecipeSelected.emit(this.recipe);
+    this.store.dispatch(new RecipeActions.StartEditRecipe(this.state.selectedRecipeIndex))
   }
 
   onDeleteRecipe(){
-    this.recipeService.removeRecipe(this.id);
+    this.store.dispatch(new RecipeActions.DeleteRecipe(this.state.selectedRecipeIndex))
   }
 }

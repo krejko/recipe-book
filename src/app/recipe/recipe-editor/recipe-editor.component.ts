@@ -3,6 +3,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 import { Recipe } from '../recipe.model';
+import { Store } from '@ngrx/store';
+import { AddRecipe } from '../recipe.action';
+import * as RecipeActions from '../recipe.action'
+import * as RecipeReducer from '../recipe.reducer'
 
 @Component({
   selector: 'app-recipe-editor',
@@ -15,7 +19,8 @@ export class RecipeEditorComponent implements OnInit {
   form: FormGroup;
 
   constructor(private activeRoute: ActivatedRoute,
-              private recipeService: RecipeService) { }
+              private recipeService: RecipeService,
+              private store: Store <RecipeReducer.AppState>) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(
@@ -68,9 +73,10 @@ export class RecipeEditorComponent implements OnInit {
     )
 
     if(this.editMode == true && this.id != undefined){
-      this.recipeService.replaceRecipe(recipe, this.id);
+      let index = this.id;
+      this.store.dispatch(new RecipeActions.UpdateRecipe({recipe, index}))
     }else{
-      this.recipeService.addRecipe(recipe);
+      this.store.dispatch(new RecipeActions.AddRecipe(recipe))
     }
   }
 

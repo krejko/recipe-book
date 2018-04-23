@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule} from '@angular/http'
 
+import { StoreModule } from '@ngrx/store';
+import { recipeReducer } from './recipe/recipe.reducer'
+
 import { AppComponent } from './app.component';
 
 import { HttpService } from './shared/http.service';
@@ -27,7 +30,8 @@ import { CoreModule } from './core/core.module';
     RoutesModule,
     HttpModule,
     AuthModule, 
-    CoreModule
+    CoreModule,
+    StoreModule.forRoot({recipeList: recipeReducer})
   ],
   providers: [ 
     ShoppingService,
