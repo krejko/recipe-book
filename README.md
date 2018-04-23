@@ -1,3 +1,5 @@
+http://krejko-recipe-book.s3-website-us-east-1.amazonaws.com/recipes
+
 # TestApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
