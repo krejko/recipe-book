@@ -27,7 +27,7 @@ import { CoreModule } from './core/core.module';
     RoutesModule,
     HttpModule,
     AuthModule, 
-    CoreModule
+    CoreModule,
   ],
   providers: [ 
     ShoppingService,
